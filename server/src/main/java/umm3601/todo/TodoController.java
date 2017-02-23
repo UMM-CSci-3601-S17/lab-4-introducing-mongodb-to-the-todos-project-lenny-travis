@@ -18,7 +18,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import static com.mongodb.client.model.Filters.eq;
+//import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Filters.*;
 
 public class TodoController {
 
@@ -43,10 +44,37 @@ public class TodoController {
     public String listTodos(Map<String, String[]> queryParams) {
         Document filterDoc = new Document();
 
+
         if (queryParams.containsKey("owner")) {
-            int targetOwner = Integer.parseInt(queryParams.get("owner")[0]);
+            String targetOwner = queryParams.get("owner")[0];
             filterDoc = filterDoc.append("owner", targetOwner);
         }
+
+        if (queryParams.containsKey("contains")) {
+            String targetBody = queryParams.get("contains")[0];
+            filterDoc.append("body", new Document("$regex", targetBody));
+        }
+
+        if (queryParams.containsKey("category")) {
+            String targetCategory = queryParams.get("category")[0];
+//            String regex = "{ $regex: /" + targetCategory + "/ }";
+            filterDoc = filterDoc.append("category", targetCategory);
+        }
+
+
+        if (queryParams.containsKey("status")) {
+            String targetStatus = queryParams.get("status")[0];
+            boolean targetBoolean = false;
+            if (targetStatus.equals("complete")) {
+                targetBoolean = true;
+            } else if (targetStatus.equals("incomplete")) {
+                targetBoolean = false;
+            } else {
+                filterDoc = filterDoc.append("status", "");
+            }
+            filterDoc = filterDoc.append("status", ((Boolean)targetBoolean).toString());
+        }
+
 
         FindIterable<Document> matchingUsers = todoCollection.find(filterDoc);
 
@@ -67,15 +95,4 @@ public class TodoController {
     }
 
 
-    public String filterTodosByOwner(String searchBy) {
-        Document filterDoc = new Document();
-
-
-            filterDoc = filterDoc.append("owner", searchBy);
-
-
-        FindIterable<Document> matchingUsers = todoCollection.find(filterDoc);
-
-        return JSON.serialize(matchingUsers);
-    }
 }
