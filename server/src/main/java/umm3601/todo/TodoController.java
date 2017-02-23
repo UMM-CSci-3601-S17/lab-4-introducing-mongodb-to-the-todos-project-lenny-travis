@@ -14,6 +14,7 @@ import org.bson.types.ObjectId;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -38,8 +39,8 @@ public class TodoController {
         todoCollection = db.getCollection("todos");
     }
 
-    // List todos by owner
-    public String listTodosByOwner(Map<String, String[]> queryParams) {
+    // List todos
+    public String listTodos(Map<String, String[]> queryParams) {
         Document filterDoc = new Document();
 
         if (queryParams.containsKey("owner")) {
@@ -66,4 +67,15 @@ public class TodoController {
     }
 
 
+    public String filterTodosByOwner(String searchBy) {
+        Document filterDoc = new Document();
+
+
+            filterDoc = filterDoc.append("owner", searchBy);
+
+
+        FindIterable<Document> matchingUsers = todoCollection.find(filterDoc);
+
+        return JSON.serialize(matchingUsers);
+    }
 }
