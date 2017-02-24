@@ -2,9 +2,9 @@ package umm3601.todo;
 
 
 public class Todo {
-    String _id;
-    String owner;
-    boolean status;
-    String body;
-    String category;
+    public String _id;
+    public String owner;
+    public boolean status;
+    public String body;
+    public String category;
 }
