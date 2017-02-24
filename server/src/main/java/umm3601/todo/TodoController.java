@@ -85,7 +85,7 @@ public class TodoController {
     public String getTodo(String id) {
         FindIterable<Document> jsonUsers
                 = todoCollection
-                .find(eq("_id", new ObjectId(id)));
+                .find(eq("_id", id));
 
         Iterator<Document> iterator = jsonUsers.iterator();
 
