@@ -64,15 +64,15 @@ public class TodoController {
 
         if (queryParams.containsKey("status")) {
             String targetStatus = queryParams.get("status")[0];
-            boolean targetBoolean = false;
+            Boolean targetBoolean = false;
             if (targetStatus.equals("complete")) {
                 targetBoolean = true;
             } else if (targetStatus.equals("incomplete")) {
                 targetBoolean = false;
             } else {
-                filterDoc = filterDoc.append("status", "");
+                targetBoolean = null;
             }
-            filterDoc = filterDoc.append("status", ((Boolean)targetBoolean).toString());
+            filterDoc = filterDoc.append("status", targetBoolean);
         }
 
 
