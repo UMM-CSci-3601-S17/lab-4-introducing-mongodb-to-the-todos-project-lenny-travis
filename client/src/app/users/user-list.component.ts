@@ -5,7 +5,7 @@ import { FilterBy } from "./filter.pipe";
 
 @Component({
     selector: 'user-list-component',
-    templateUrl: 'user-list.component.html',
+    templateUrl: 'todo-list.component.html',
     providers: [ FilterBy ]
 })
 
