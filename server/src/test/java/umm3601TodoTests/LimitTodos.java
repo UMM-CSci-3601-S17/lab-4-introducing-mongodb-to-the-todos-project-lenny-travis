@@ -36,7 +36,7 @@ public class LimitTodos {
         queryParams.put("limit", new String[] {"0"});
         String rawTodos = todoController.listTodos(queryParams);
         filterLimitTodos = gson.fromJson(rawTodos, Todo[].class);
-        assertEquals("Incorrect number of limited todos (300 todos)", 300, filterLimitTodos.length);
+        assertEquals("Incorrect number of limited todos (0 todos)", 0, filterLimitTodos.length);
     }
 
     @Test
