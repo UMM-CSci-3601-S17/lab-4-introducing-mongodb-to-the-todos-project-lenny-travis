@@ -37,6 +37,10 @@ public class TodoController {
         todoCollection = db.getCollection("todos");
     }
 
+    public int getPercentDoneByOwner() {
+        return 0;
+    }
+
     // List todos
     public String listTodos(Map<String, String[]> queryParams) {
         Document filterDoc = new Document();
@@ -130,6 +134,5 @@ public class TodoController {
 
         return user.toJson();
     }
-
 
 }
