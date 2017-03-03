@@ -46,6 +46,8 @@ public class TodoController {
 
         //when the target limit is 0, Mongo returns all items
         int targetLimit = 0;
+        //clear list is true when the input limit = 0
+        boolean clearList = false;
 
 
         if (queryParams.containsKey("owner")) {
@@ -84,6 +86,9 @@ public class TodoController {
                 if(inputLimit != Math.abs(inputLimit)) {
                     targetLimit = 0;
                 }
+                else if(inputLimit == 0) {
+                    clearList = true;
+                }
                 else {
                     targetLimit = inputLimit;
                 }
@@ -93,6 +98,10 @@ public class TodoController {
             }
         }
 
+        if(clearList){
+            filterDoc.clear();
+            filterDoc.append("_id", null);
+        }
 
         FindIterable<Document> matchingUsers = todoCollection.find(filterDoc).limit(targetLimit);
 
