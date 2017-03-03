@@ -63,6 +63,11 @@ public class Server {
             return todoController.listTodos(req.queryMap().toMap());
         });
 
+        get("api/percentTodoByOwner", (req, res) -> {
+            res.type("application/json");
+            return todoController.getPercentDoneByOwner();
+        });
+
         // Handle "404" file not found requests:
         notFound((req, res) -> {
             res.type("text");
