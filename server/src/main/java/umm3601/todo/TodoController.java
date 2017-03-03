@@ -13,10 +13,7 @@ import org.bson.Document;
 import org.bson.types.ObjectId;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 //import static com.mongodb.client.model.Filters.eq;
 import static com.mongodb.client.model.Filters.*;
@@ -48,6 +45,12 @@ public class TodoController {
         int targetLimit = 0;
         //clear list is true when the input limit = 0
         boolean clearList = false;
+        /*
+        This String will set the type that orderBy will sort with,
+        if mongoDB's sort does not get a key it can sort by it just returns an unsorted result.
+        Pony is not a key in the JSON object.
+         */
+        String sortBy = "pony";
 
 
         if (queryParams.containsKey("owner")) {
@@ -80,10 +83,17 @@ public class TodoController {
             filterDoc = filterDoc.append("status", targetBoolean);
         }
 
+        if(queryParams.containsKey("orderBy")) {
+            String orderByInput = queryParams.get("orderBy")[0];
+           if(orderByInput.equals("owner") || orderByInput.equals("body") || orderByInput.equals("status") || orderByInput.equals("category")){
+               sortBy = orderByInput;
+           }
+        }
+
         if (queryParams.containsKey("limit")) {
             try {
                 int inputLimit = Integer.parseInt(queryParams.get("limit")[0]);
-                if(inputLimit != Math.abs(inputLimit)) {
+                if(inputLimit > 0) {
                     targetLimit = 0;
                 }
                 else if(inputLimit == 0) {
@@ -103,7 +113,7 @@ public class TodoController {
             filterDoc.append("_id", null);
         }
 
-        FindIterable<Document> matchingUsers = todoCollection.find(filterDoc).limit(targetLimit);
+        FindIterable<Document> matchingUsers = todoCollection.find(filterDoc).sort(Sorts.ascending(sortBy)).limit(targetLimit);
 
         return JSON.serialize(matchingUsers);
     }
