@@ -11,9 +11,6 @@ import java.util.Map;
 
 import static junit.framework.TestCase.assertEquals;
 
-/**
- * Created by Dogxx000 on 3/2/17.
- */
 public class LimitTodos {
 
     @Test
@@ -23,17 +20,50 @@ public class LimitTodos {
         Gson gson = new Gson();
 
         Map<String, String[]> queryParams = new HashMap<>();
-        queryParams.put("Limit", new String[] {"7"});
+        queryParams.put("limit", new String[] {"7"});
         String rawTodos = todoController.listTodos(queryParams);
         filterLimitTodos = gson.fromJson(rawTodos, Todo[].class);
         assertEquals("Incorrect number of limited todos (7 todos)", 7, filterLimitTodos.length);
+    }
 
-        queryParams = new HashMap<>();
-        queryParams.put("Limit", new String[] {"0"});
-        rawTodos = todoController.listTodos(queryParams);
+    @Test
+    public void limitTodosBy0() throws IOException {
+        TodoController todoController = new TodoController();
+        Todo[] filterLimitTodos;
+        Gson gson = new Gson();
+
+        Map<String, String[]>queryParams = new HashMap<>();
+        queryParams.put("limit", new String[] {"0"});
+        String rawTodos = todoController.listTodos(queryParams);
         filterLimitTodos = gson.fromJson(rawTodos, Todo[].class);
-        assertEquals("Incorrect number of limited todos (0 todos)", 0, filterLimitTodos.length);
+        assertEquals("Incorrect number of limited todos (300 todos)", 300, filterLimitTodos.length);
+    }
 
+    @Test
+    public void limitTodosByNegativeNumber() throws IOException {
+        TodoController todoController = new TodoController();
+        Todo[] filterLimitTodos;
+        Gson gson = new Gson();
+
+        Map<String, String[]>queryParams = new HashMap<>();
+        queryParams.put("limit", new String[] {"-5"});
+        String rawTodos = todoController.listTodos(queryParams);
+        filterLimitTodos = gson.fromJson(rawTodos, Todo[].class);
+        assertEquals("Incorrect number of limited todos (300 todos)", 300, filterLimitTodos.length);
+    }
+
+    @Test
+    public void limitTodosByString() throws IOException {
+        TodoController todoController = new TodoController();
+        Todo[] filterLimitTodos;
+        Gson gson = new Gson();
+
+
+        Map<String, String[]> queryParams = new HashMap<>();
+        queryParams.put("limit", new String[] {"I hate numbers"});
+        String rawTodos = todoController.listTodos(queryParams);
+        filterLimitTodos = gson.fromJson(rawTodos, Todo[].class);
+        assertEquals("Incorrect number of limited todos (300 todos)", 300, filterLimitTodos.length);
     }
 
 }
