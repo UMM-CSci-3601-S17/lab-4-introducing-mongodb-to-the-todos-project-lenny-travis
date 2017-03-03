@@ -44,6 +44,9 @@ public class TodoController {
     public String listTodos(Map<String, String[]> queryParams) {
         Document filterDoc = new Document();
 
+        //when the target limit is 0, Mongo returns all items
+        int targetLimit = 0;
+
 
         if (queryParams.containsKey("owner")) {
             String targetOwner = queryParams.get("owner")[0];
@@ -52,7 +55,7 @@ public class TodoController {
 
         if (queryParams.containsKey("contains")) {
             String targetBody = queryParams.get("contains")[0];
-            filterDoc.append("body", new Document("$regex", targetBody));
+            filterDoc = filterDoc.append("body", new Document("$regex", targetBody));
         }
 
         if (queryParams.containsKey("category")) {
@@ -75,8 +78,23 @@ public class TodoController {
             filterDoc = filterDoc.append("status", targetBoolean);
         }
 
+        if (queryParams.containsKey("limit")) {
+            try {
+                int inputLimit = Integer.parseInt(queryParams.get("limit")[0]);
+                if(inputLimit != Math.abs(inputLimit)) {
+                    targetLimit = 0;
+                }
+                else {
+                    targetLimit = inputLimit;
+                }
+            }
+            catch (NumberFormatException parseExpception) {
+                // targetInput will be zero (aka it will return everything)
+            }
+        }
 
-        FindIterable<Document> matchingUsers = todoCollection.find(filterDoc);
+
+        FindIterable<Document> matchingUsers = todoCollection.find(filterDoc).limit(targetLimit);
 
         return JSON.serialize(matchingUsers);
     }
