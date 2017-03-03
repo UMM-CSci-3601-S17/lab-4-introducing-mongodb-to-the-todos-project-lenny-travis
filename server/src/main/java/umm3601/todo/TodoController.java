@@ -97,7 +97,7 @@ public class TodoController {
         if (queryParams.containsKey("limit")) {
             try {
                 int inputLimit = Integer.parseInt(queryParams.get("limit")[0]);
-                if(inputLimit > 0) {
+                if(inputLimit < 0) {
                     targetLimit = 0;
                 }
                 else if(inputLimit == 0) {
