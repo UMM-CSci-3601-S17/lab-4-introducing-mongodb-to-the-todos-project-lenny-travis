@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TodoListService } from "./todo-list.service";
 import { Todo } from "./todo";
-import { FilterBy } from "./filter.pipe";
+import { FilterBy } from "../users/filter.pipe";
 
 @Component({
     selector: 'todo-list-component',

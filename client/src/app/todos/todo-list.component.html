@@ -1,37 +1,22 @@
 <ul class="list-group">
     <li class="list-group-item list-group-item-info">
-        <input #input type="text" placeholder="ID Filter" [(ngModel)]="searchID">
-        ID
-
-        <br><br>
-
-        <input #input type="text" placeholder="Owner Filter" [(ngModel)]="searchOWNER">
-        Owner
-
-        <br><br>
-
+        <input #input type="text" placeholder="ID Filter" [(ngModel)]="searchID">ID<br><br>
+        <input #input type="text" placeholder="Owner Filter" [(ngModel)]="searchOWNER">Owner<br><br>
         <select [(ngModel)]="searchSTATUS">
             <option value = "" ></option>
             <option value = "1">Complete</option>
             <option value = "0">Incomplete</option>
-        </select>
-        Status
-
-        <br><br>
-
-        <input #input type="text" placeholder="Body Filter" [(ngModel)]="searchBODY">
-        Body
-
-        <br><br>
-
-        <input #input type="text" placeholder="Category Filter" [(ngModel)]="searchCATEGORY">
-        Category
+        </select>Status<br><br>
+        <input #input type="text" placeholder="Body Filter" [(ngModel)]="searchBODY">Body<br><br>
+        <input #input type="text" placeholder="Category Filter" [(ngModel)]="searchCATEGORY">Category<br><br>
+        <input #input type="text" placeholder="Limit Todos" [(ngModel)]="todoLIMIT">Limits<br><br>
     </li>
-    <li *ngFor="let todo of todos | async | filterBy: {_id: searchID}
-                                          | filterBy: {owner: searchOWNER}
-                                          | filterBy: {status: searchSTATUS}
-                                          | filterBy: {body: searchBODY}
-                                          | filterBy: {category: searchCATEGORY}"
+
+    <li *ngFor="let todo of todos |  filterBy: {_id: searchID}
+                                  | filterBy: {owner: searchOWNER}
+                                  | filterBy: {status: searchSTATUS}
+                                  | filterBy: {body: searchBODY}
+                                  | filterBy: {category: searchCATEGORY}"
         class="list-group-item">
         <u>ID</u>: {{ todo._id }}<br>
         <u>Owner</u>:  {{ todo.owner }}<br>
